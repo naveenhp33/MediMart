@@ -1,0 +1,25 @@
+.success-page{
+height:80vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:20px;
+}
+
+.success-page h1{
+color:#27ae60;
+}
+
+.success-page button{
+padding:12px 20px;
+border:none;
+background:#2f80ed;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+.view-orders{
+background:#27ae60;
+}

@@ -1,0 +1,177 @@
+.order-page{
+padding:40px;
+background:#f4f6fb;
+min-height:100vh;
+}
+
+.order-page h1{
+font-size:28px;
+margin-bottom:30px;
+font-weight:600;
+}
+
+.order-container{
+display:flex;
+gap:40px;
+align-items:flex-start;
+max-width:1200px;
+margin:auto;
+}
+
+/* FORM */
+
+.order-form{
+flex:2;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 4px 15px rgba(0,0,0,0.08);
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.order-form h2{
+margin-bottom:10px;
+font-size:20px;
+}
+
+.order-form input,
+.order-form textarea{
+padding:12px;
+border:1px solid #ddd;
+border-radius:6px;
+font-size:14px;
+outline:none;
+transition:0.2s;
+}
+
+.order-form input:focus,
+.order-form textarea:focus{
+border-color:#2f80ed;
+}
+
+.order-form textarea{
+height:100px;
+resize:none;
+}
+
+/* PAYMENT */
+
+.payment-method{
+margin-top:10px;
+}
+
+.payment-method h3{
+margin-bottom:10px;
+}
+
+.payment-options{
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+/* FIXED PAYMENT OPTION ALIGNMENT */
+
+.payment-option{
+display:grid;
+grid-template-columns: 25px 40px auto;
+align-items:center;
+gap:12px;
+padding:12px;
+border:1px solid #eee;
+border-radius:6px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.payment-option:hover{
+background:#f5f7fb;
+border-color:#dbeafe;
+}
+
+.payment-option input{
+justify-self:center;
+cursor:pointer;
+}
+
+.payment-option img{
+width:32px;
+height:32px;
+object-fit:contain;
+}
+
+.payment-option span{
+font-size:14px;
+font-weight:500;
+}
+
+/* BUTTON */
+
+.order-form button{
+margin-top:15px;
+padding:12px;
+border:none;
+background:#27ae60;
+color:white;
+font-size:16px;
+border-radius:6px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.order-form button:hover{
+background:#219150;
+transform:scale(1.02);
+}
+
+/* SUMMARY */
+
+.order-summary{
+flex:1;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+.order-summary h2{
+margin-bottom:20px;
+}
+
+.summary-item{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:15px;
+}
+
+.summary-item img{
+width:50px;
+height:50px;
+object-fit:contain;
+}
+
+.summary-item div{
+flex:1;
+}
+
+.summary-item p{
+margin:0;
+font-size:14px;
+}
+
+.summary-item span{
+font-weight:bold;
+}
+
+.summary-total{
+border-top:1px solid #eee;
+padding-top:15px;
+margin-top:15px;
+display:flex;
+justify-content:space-between;
+font-size:18px;
+font-weight:600;
+}

@@ -1,0 +1,147 @@
+/* PROFILE PAGE */
+
+.profile-page{
+max-width:1000px;
+margin:auto;
+padding:40px 20px;
+}
+
+.profile-page h1{
+margin-bottom:25px;
+font-size:28px;
+font-weight:600;
+}
+
+/* MAIN LAYOUT */
+
+.profile-container{
+display:flex;
+gap:30px;
+align-items:flex-start;
+flex-wrap:wrap;
+}
+
+/* LEFT PROFILE CARD */
+
+.profile-card{
+width:260px;
+background:white;
+padding:30px 20px;
+border-radius:12px;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+text-align:center;
+transition:0.3s;
+}
+
+.profile-card:hover{
+transform:translateY(-4px);
+box-shadow:0 10px 22px rgba(0,0,0,0.12);
+}
+
+.profile-card h2{
+margin-top:10px;
+font-size:20px;
+font-weight:600;
+}
+
+.profile-card p{
+font-size:14px;
+color:#666;
+margin-top:5px;
+word-break:break-word;
+}
+
+/* AVATAR */
+
+.avatar{
+width:90px;
+height:90px;
+background:#1976d2;
+color:white;
+font-size:34px;
+font-weight:bold;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+margin:auto;
+margin-bottom:12px;
+}
+
+/* RIGHT SIDE DETAILS */
+
+.profile-details{
+flex:1;
+background:white;
+padding:30px;
+border-radius:12px;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+.profile-details h3{
+margin-bottom:20px;
+font-size:20px;
+}
+
+/* INPUT FIELDS */
+
+.profile-details label{
+display:block;
+font-weight:500;
+margin-bottom:6px;
+margin-top:12px;
+}
+
+.profile-details input,
+.profile-details textarea{
+width:100%;
+padding:12px;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:14px;
+outline:none;
+transition:0.2s;
+}
+
+.profile-details input:focus,
+.profile-details textarea:focus{
+border-color:#1976d2;
+box-shadow:0 0 0 2px rgba(25,118,210,0.1);
+}
+
+.profile-details textarea{
+height:90px;
+resize:none;
+}
+
+/* UPDATE BUTTON */
+
+.profile-details button{
+margin-top:20px;
+padding:12px 18px;
+background:#1976d2;
+color:white;
+border:none;
+border-radius:6px;
+font-weight:500;
+cursor:pointer;
+transition:0.2s;
+}
+
+.profile-details button:hover{
+background:#0d47a1;
+}
+
+/* MOBILE RESPONSIVE */
+
+@media (max-width:768px){
+
+.profile-container{
+flex-direction:column;
+}
+
+.profile-card{
+width:100%;
+}
+
+}

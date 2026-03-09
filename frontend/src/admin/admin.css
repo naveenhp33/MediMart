@@ -1,0 +1,25 @@
+.admin-container{
+padding:40px;
+}
+
+.admin-cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+margin-top:30px;
+}
+
+.admin-card{
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+text-decoration:none;
+color:black;
+transition:0.2s;
+}
+
+.admin-card:hover{
+transform:translateY(-4px);
+box-shadow:0 8px 18px rgba(0,0,0,0.15);
+}
