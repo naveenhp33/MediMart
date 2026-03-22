@@ -43,66 +43,63 @@ fetchProducts();
 },[category,search]);
 
 
-return(
+  return (
+    <div className="page-container animate-fade-in">
+      <section className="hero-section" style={{ textAlign: 'center', padding: '4rem 1rem', background: 'var(--grad-surface)', borderRadius: 'var(--radius-xl)', marginBottom: '3rem' }}>
+        <h1 style={{ fontSize: '3.5rem', marginBottom: '1rem', background: 'var(--grad-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+          Your Health, Simplified.
+        </h1>
+        <p style={{ fontSize: '1.25rem', color: 'var(--text-muted)', maxWidth: '600px', margin: '0 auto 2.5rem' }}>
+          Get authentic medicines and healthcare products delivered to your doorstep.
+        </p>
 
-<div className="home-container">
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Search for medicines, vitamins, or devices..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+      </section>
 
-<h1>MediMart Pharmacy</h1>
+      <div className="category-buttons">
+        {['All', 'Pain Relief', 'Vitamins', 'Devices'].map((cat) => (
+          <button 
+            key={cat} 
+            className={category === cat ? "active" : ""} 
+            onClick={() => setCategory(cat)}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
 
-{/* SEARCH */}
-
-<div className="search-bar">
-
-<input
-type="text"
-placeholder="Search medicines..."
-value={search}
-onChange={(e)=>setSearch(e.target.value)}
-/>
-
-</div>
-
-
-{/* CATEGORY FILTER */}
-
-<div className="category-buttons">
-
-<button onClick={()=>setCategory("All")}>All</button>
-<button onClick={()=>setCategory("Pain Relief")}>Pain Relief</button>
-<button onClick={()=>setCategory("Vitamins")}>Vitamins</button>
-<button onClick={()=>setCategory("Devices")}>Devices</button>
-
-</div>
-
-
-{/* LOADING */}
-
-{loading && <p>Loading medicines...</p>}
-
-
-{/* ERROR */}
-
-{error && <p>{error}</p>}
-
-
-{/* PRODUCTS */}
-
-<div className="product-grid">
-
-{products.length === 0 && !loading ? (
-<p>No medicines found</p>
-) : (
-products.map(product => (
-<ProductCard key={product._id} product={product}/>
-))
-)}
-
-</div>
-
-</div>
-
-)
-
+      {loading ? (
+        <div style={{ textAlign: 'center', padding: '3rem' }}>
+          <div className="loading-spinner"></div>
+          <p style={{ color: 'var(--text-muted)', marginTop: '1rem' }}>Updating pharmacy shelf...</p>
+        </div>
+      ) : error ? (
+        <div style={{ textAlign: 'center', padding: '3rem', color: '#EF4444' }}>
+          <p>{error}</p>
+        </div>
+      ) : (
+        <div className="product-grid">
+          {products.length === 0 ? (
+            <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '3rem' }}>
+              <p style={{ color: 'var(--text-muted)' }}>No medicines found for your search.</p>
+            </div>
+          ) : (
+            products.map(product => (
+              <ProductCard key={product._id} product={product} />
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default Home;
+

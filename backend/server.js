@@ -3,6 +3,9 @@ import mongoose from "mongoose";
 import cors from "cors";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import multer from "multer";
+import fs from "fs";
+import path from "path";
 
 const app = express();
 
@@ -29,12 +32,19 @@ email:{type:String,required:true,unique:true},
 password:{type:String,required:true},
 
 role:{
-type:String,
-enum:["customer","seller","admin"],
-default:"customer"
+  type:String,
+  enum:["customer","seller","admin"],
+  default:"customer"
+},
+
+status: {
+  type: String,
+  enum: ["pending", "approved", "rejected"],
+  default: "approved" /* Default to approved for everyone, we'll override for sellers in sign-up */
 }
 
 },{timestamps:true})
+
 
 const User = mongoose.model("User",userSchema)
 
@@ -49,14 +59,29 @@ category:String,
 price:{type:Number,required:true},
 description:String,
 shortDesc:String,
-imageUrl:String,
-stock:Number,
+imageUrl: String,
+stock: Number,
+daySupply: {
+  type: Number,
+  default: 30 /* Default 30-day treatment duration */
+},
 
-sellerId:{
-type:mongoose.Schema.Types.ObjectId,
-ref:"User"
+sellerId: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "User"
+},
+isApproved: {
+  type: Boolean,
+  default: true
+},
+requiresPrescription: {
+  type: Boolean,
+  default: false
+},
+expiryDate: {
+  type: String,
+  default: ""
 }
-
 },{timestamps:true})
 
 const Product = mongoose.model("Product",productSchema)
@@ -75,7 +100,10 @@ address:String,
 
 paymentMethod:String,
 
+prescriptionUrl: String,
+
 items:[
+
 {
 productId:String,
 name:String,
@@ -87,12 +115,16 @@ image:String
 
 total:Number,
 
-status:{
-type:String,
-default:"Pending"
+status: {
+  type: String,
+  default: "Pending"
+},
+deliveryDate: {
+  type: String,
+  default: ""
 }
-
 },{timestamps:true})
+
 
 const Order = mongoose.model("Order",orderSchema)
 
@@ -120,7 +152,27 @@ const Cart = mongoose.model("Cart",cartSchema)
 
 
 
+/* -------------------- UPLOADS -------------------- */
+const uploadDir = "uploads/prescriptions";
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname),
+});
+
+const upload = multer({ storage });
+
+app.post("/api/upload/prescription", upload.single("prescription"), (req, res) => {
+  if (!req.file) return res.status(400).json({ message: "No file uploaded" });
+  const url = `http://localhost:5000/uploads/prescriptions/${req.file.filename}`;
+  res.json({ url });
+});
+
 /* -------------------- AUTH MIDDLEWARE -------------------- */
+
 
 const verifyToken = (req,res,next)=>{
 
@@ -158,79 +210,72 @@ app.post("/api/auth/register", async(req,res)=>{
 try{
 
 const {name,email,password,role} = req.body
+console.log("Registering user:", { name, email, role });
 
 const existingUser = await User.findOne({email})
 
 if(existingUser){
+console.log("User already exists:", email);
 return res.status(400).json({message:"User already exists"})
 }
 
 const hashedPassword = await bcrypt.hash(password,10)
 
-const user = new User({
-name,
-email,
-password:hashedPassword,
-role
-})
+    const user = new User({
+      name,
+      email,
+      password: hashedPassword,
+      role,
+      status: role === "seller" ? "pending" : "approved",
+    });
 
-await user.save()
+    await user.save();
+    console.log("User registered successfully:", email);
 
-res.json({
-message:"User registered successfully"
-})
+    /* Create token for auto-login (only if approved or customer) */
+    const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: "7d" });
 
-}catch(err){
-
-res.status(500).json(err)
-
-}
-
-})
-
-
+    res.json({
+      message: role === "seller" ? "Registered! Please wait for admin approval." : "Registration successful",
+      token,
+      user,
+    });
+  } catch (err) {
+    console.error("Registration error:", err);
+    if (err.name === "ValidationError") {
+      return res.status(400).json({ message: err.message });
+    }
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 /* LOGIN */
+app.post("/api/auth/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
 
-app.post("/api/auth/login", async(req,res)=>{
+    if (!user) return res.status(400).json({ message: "User not found" });
 
-try{
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
-const {email,password} = req.body
+    if (user.role === "seller" && user.status !== "approved") {
+      return res.status(401).json({
+        message:
+          user.status === "pending"
+            ? "Your account is pending approval."
+            : "Your account request was rejected. Please contact support.",
+      });
+    }
 
-const user = await User.findOne({email})
+    const token = jwt.sign({ id: user._id, role: user.role, status: user.status }, JWT_SECRET, { expiresIn: "7d" });
 
-if(!user){
-return res.status(400).json({message:"User not found"})
-}
-
-const isMatch = await bcrypt.compare(password,user.password)
-
-if(!isMatch){
-return res.status(400).json({message:"Invalid credentials"})
-}
-
-/* CREATE TOKEN */
-
-const token = jwt.sign(
-{ id:user._id, role:user.role },
-JWT_SECRET,
-{ expiresIn:"7d" }
-)
-
-res.json({
-message:"Login successful",
-token,
-user
-})
-
-}catch(err){
-
-res.status(500).json(err)
-
-}
-
-})
+    res.json({ token, user });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 
 
@@ -245,15 +290,16 @@ try{
 
 const {category,search} = req.query
 
-let query = {}
+let query = { isApproved: true };
 
-if(category && category !== "All"){
-query.category = category
+if (category && category !== "All") {
+  query.category = category;
 }
 
-if(search){
-query.name = {$regex:search,$options:"i"}
+if (search) {
+  query.name = { $regex: search, $options: "i" };
 }
+
 
 const products = await Product.find(query)
 
@@ -291,26 +337,29 @@ res.status(500).json(err)
 
 /* ADD PRODUCT (SELLER ONLY) */
 
-app.post("/api/products",verifyToken, async(req,res)=>{
+app.post("/api/products", verifyToken, async (req, res) => {
+  try {
+    const { name, price, category, stock, imageUrl, description, shortDesc, requiresPrescription, expiryDate } = req.body;
+    const project = new Product({
+      name,
+      price,
+      category,
+      stock,
+      imageUrl,
+      description,
+      shortDesc,
+      requiresPrescription,
+      expiryDate,
+      sellerId: req.user.id,
+      isApproved: false, // All new medicine needs Admin approval
+    });
 
-try{
-
-const product = new Product({
-...req.body,
-sellerId:req.user.id
-})
-
-await product.save()
-
-res.json(product)
-
-}catch(err){
-
-res.status(500).json(err)
-
-}
-
-})
+    await project.save();
+    res.json(project);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 // delete a product//
 app.delete("/api/products/:id", async(req,res)=>{
@@ -355,74 +404,51 @@ res.status(500).json(err)
 
 
 /* CREATE ORDER */
+app.post("/api/orders", verifyToken, async (req, res) => {
+  try {
+    const order = new Order({
+      ...req.body,
+      userId: req.user.id, // Store who bought this
+    });
+    await order.save();
+    res.json(order);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
-app.post("/api/orders", async(req,res)=>{
-
-try{
-
-const order = new Order(req.body)
-
-await order.save()
-
-res.json(order)
-
-}catch(err){
-
-res.status(500).json(err)
-
-}
-
-})
 
 
 
 /* GET ALL ORDERS */
 
-app.get("/api/orders", async (req, res) => {
-
-try {
-
-const orders = await Order.find();
-
-res.json(orders);
-
-} catch (err) {
-
-res.status(500).json(err);
-
-}
-
+/* GET ALL ORDERS (USER SPECIFIC OR ADMIN ALL) */
+app.get("/api/orders", verifyToken, async (req, res) => {
+  try {
+    let query = {};
+    if (req.user.role === "customer") {
+      query.userId = req.user.id;
+    }
+    const orders = await Order.find(query).sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
+
 /* SELLER ORDERS */
-
-app.get("/api/seller/orders/:sellerId", async(req,res)=>{
-
-try{
-
-const sellerId = req.params.sellerId
-
-/* find products of seller */
-
-const products = await Product.find({sellerId})
-
-const productIds = products.map(p=>p._id.toString())
-
-/* find orders containing those products */
-
-const orders = await Order.find({
-"items.productId":{$in:productIds}
-})
-
-res.json(orders)
-
-}catch(err){
-
-res.status(500).json(err)
-
-}
-
-})
+app.get("/api/seller/orders/:sellerId", async (req, res) => {
+  try {
+    const sellerId = req.params.sellerId;
+    const products = await Product.find({ sellerId });
+    const productIds = products.map((p) => p._id.toString());
+    const orders = await Order.find({ "items.productId": { $in: productIds } }).sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 
 
@@ -486,32 +512,108 @@ res.status(500).json(err)
 })
 
 /* UPDATE ORDER STATUS */
+app.put("/api/orders/:id/status", async (req, res) => {
+  try {
+    const { status } = req.body;
+    const order = await Order.findByIdAndUpdate(req.params.id, { status }, { new: true });
+    res.json(order);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
-app.put("/api/orders/:id/status", async (req,res)=>{
-
-try{
-
-const { status } = req.body;
-
-const order = await Order.findByIdAndUpdate(
-req.params.id,
-{ status },
-{ new:true }
-);
-
-res.json(order);
-
-}catch(err){
-
-res.status(500).json(err);
-
-}
-
+/* UPDATE DELIVERY DATE */
+app.put("/api/orders/:id/delivery", async (req, res) => {
+  try {
+    const { deliveryDate } = req.body;
+    const order = await Order.findByIdAndUpdate(req.params.id, { deliveryDate }, { new: true });
+    res.json(order);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 
 
+
+/* -------------------- ADMIN APIs -------------------- */
+
+/* GET ADMIN STATS */
+app.get("/api/admin/stats", async (req, res) => {
+  try {
+    const totalUsers = await User.countDocuments();
+    const totalProducts = await Product.countDocuments();
+    const pendingSellers = await User.countDocuments({ role: "seller", status: "pending" });
+    const pendingProducts = await Product.countDocuments({ isApproved: false });
+    const totalOrders = await Order.countDocuments();
+
+    res.json({
+      totalUsers,
+      totalProducts,
+      pendingSellers,
+      pendingProducts,
+      totalOrders,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+/* GET ALL USERS (FOR ADMIN) */
+
+app.get("/api/admin/users", async (req, res) => {
+  try {
+    const users = await User.find().sort({ createdAt: -1 });
+    res.json(users);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+/* GET PENDING SELLERS */
+app.get("/api/admin/sellers/pending", async (req, res) => {
+  try {
+    const sellers = await User.find({ role: "seller", status: "pending" });
+    res.json(sellers);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+/* UPDATE SELLER STATUS */
+app.put("/api/admin/sellers/:id/status", async (req, res) => {
+  try {
+    const { status } = req.body;
+    const user = await User.findByIdAndUpdate(req.params.id, { status }, { new: true });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+/* GET PENDING PRODUCTS (FOR APPROVAL) */
+app.get("/api/admin/products/pending", async (req, res) => {
+  try {
+    const products = await Product.find({ isApproved: false }).populate("sellerId", "name email");
+    res.json(products);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+/* APPROVE PRODUCT */
+app.put("/api/admin/products/:id/approve", async (req, res) => {
+  try {
+    const { isApproved } = req.body;
+    const product = await Product.findByIdAndUpdate(req.params.id, { isApproved }, { new: true });
+    res.json(product);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 /* -------------------- ROOT -------------------- */
+
 
 app.get("/",(req,res)=>{
 

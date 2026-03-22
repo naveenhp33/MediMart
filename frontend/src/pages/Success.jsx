@@ -7,7 +7,7 @@ return(
 
 <div className="success-page">
 
-<h1>🎉 Order Placed Successfully!</h1>
+<h1> Order Placed Successfully!</h1>
 
 <p>Your medicines will be delivered soon.</p>
 

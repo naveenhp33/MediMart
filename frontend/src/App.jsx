@@ -9,6 +9,7 @@ import Auth from "./pages/auth";
 import Profile from "./pages/Profile"
 import Navbar from "./components/Navbar";
 import Wishlist from "./pages/Wishlist";
+import Invoice from "./pages/Invoice"; // Added import for Invoice
 import { ToastProvider } from "./context/ToastContext";
 
 import SellerDashboard from "./seller/SellerDashboard";
@@ -23,6 +24,7 @@ import AdminUsers from "./admin/AdminUsers";
 
 import { AuthProvider } from "./context/AuthContext";
 import AdminRoute from "./routes/AdminRoute";
+import UserRoute from "./routes/UserRoute"; // Added import for UserRoute
 import Orders from "./pages/Orders";
 import { WishlistProvider } from "./context/WishlistContext";
 
@@ -47,6 +49,7 @@ return(
 <Route path="/order" element={<Order/>} />
 <Route path="/success" element={<Success/>} />
 <Route path="/orders" element={<Orders/>}/>
+<Route path="/invoice/:id" element={<UserRoute><Invoice/></UserRoute>} /> {/* Added Invoice route with UserRoute protection */}
 <Route path="/auth" element={<Auth/>} />
 
 {/* Seller routes */}
