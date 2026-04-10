@@ -1,0 +1,209 @@
+[
+  {
+    "name": "Paracetamol 500mg",
+    "category": "Pain Relief",
+    "price": 20,
+    "shortDesc": "Effective pain and fever relief tablet",
+    "description": "Paracetamol 500mg tablets used to treat fever, headache, and mild pain.",
+    "imageUrl": "http://localhost:5001/uploads/paracetamol.webp",
+    "stock": 120
+  },
+  {
+    "name": "Dolo 650",
+    "category": "Pain Relief",
+    "price": 30,
+    "shortDesc": "Used to reduce fever and body pain",
+    "description": "Dolo 650 is widely used for treating fever, cold, and mild body pain.",
+    "imageUrl": "http://localhost:5001/uploads/dolo-650mg.webp",
+    "stock": 150
+  },
+  {
+    "name": "Crocin",
+    "category": "Pain Relief",
+    "price": 25,
+    "shortDesc": "Fast relief from fever",
+    "description": "Crocin tablets contain paracetamol and are used to relieve fever and mild pain.",
+    "imageUrl": "http://localhost:5001/uploads/corcin.webp",
+    "stock": 100
+  },
+  {
+    "name": "Ibuprofen 400mg",
+    "category": "Pain Relief",
+    "price": 40,
+    "shortDesc": "Anti inflammatory pain relief medicine",
+    "description": "Ibuprofen tablets are used to treat pain, swelling, and inflammation.",
+    "imageUrl": "http://localhost:5001/uploads/brufen-400.webp",
+    "stock": 90
+  },
+  {
+    "name": "Combiflam",
+    "category": "Pain Relief",
+    "price": 35,
+    "shortDesc": "Relieves pain and inflammation",
+    "description": "Combiflam contains ibuprofen and paracetamol for fast pain relief.",
+    "imageUrl": "http://localhost:5001/uploads/combiflam-.webp",
+    "stock": 110
+  },
+  {
+    "name": "Azithromycin 500mg",
+    "category": "Antibiotic",
+    "price": 75,
+    "shortDesc": "Treats respiratory infections",
+    "description": "Azithromycin is used to treat bacterial infections such as bronchitis.",
+    "imageUrl": "http://localhost:5001/uploads/azi.webp",
+    "stock": 70
+  },
+  {
+    "name": "Metformin 500mg",
+    "category": "Diabetes",
+    "price": 55,
+    "shortDesc": "Controls blood sugar levels",
+    "description": "Metformin is used to manage type 2 diabetes and control glucose levels.",
+    "imageUrl": "http://localhost:5001/uploads/meta.webp",
+    "stock": 95
+  },
+  {
+    "name": "Pantoprazole",
+    "category": "Gastric",
+    "price": 45,
+    "shortDesc": "Reduces stomach acid",
+    "description": "Pantoprazole tablets are used to treat acid reflux and stomach ulcers.",
+    "imageUrl": "http://localhost:5001/uploads/pan-40mg-strip-of-15-tablets.webp",
+    "stock": 85
+  },
+  {
+    "name": "Omeprazole",
+    "category": "Gastric",
+    "price": 42,
+    "shortDesc": "Treats acidity and heartburn",
+    "description": "Omeprazole helps reduce excess stomach acid and treat GERD.",
+    "imageUrl": "http://localhost:5001/uploads/omez-20-strip-of-20-capsules.webp",
+    "stock": 80
+  },
+  {
+    "name": "Cetirizine",
+    "category": "Allergy",
+    "price": 18,
+    "shortDesc": "Relieves allergy symptoms",
+    "description": "Cetirizine tablets are used for sneezing, runny nose, and skin allergies.",
+    "imageUrl": "http://localhost:5001/uploads/cetri.webp",
+    "stock": 140
+  },
+  {
+    "name": "Levocetirizine",
+    "category": "Allergy",
+    "price": 22,
+    "shortDesc": "Antihistamine for allergies",
+    "description": "Levocetirizine helps treat allergic rhinitis and skin allergies.",
+    "imageUrl": "http://localhost:5001/uploads/levo.webp",
+    "stock": 120
+  },
+  {
+    "name": "ORS Sachet",
+    "category": "Rehydration",
+    "price": 15,
+    "shortDesc": "Prevents dehydration",
+    "description": "ORS sachets are used to restore fluids and electrolytes in dehydration.",
+    "imageUrl": "http://localhost:5001/uploads/ors.webp",
+    "stock": 200
+  },
+  {
+    "name": "Vitamin C Tablets",
+    "category": "Supplements",
+    "price": 50,
+    "shortDesc": "Boosts immunity",
+    "description": "Vitamin C tablets help strengthen immunity and protect against infections.",
+    "imageUrl": "http://localhost:5001/uploads/vitc.webp",
+    "stock": 130
+  },
+  {
+    "name": "Zinc Tablets",
+    "category": "Supplements",
+    "price": 48,
+    "shortDesc": "Supports immune system",
+    "description": "Zinc supplements improve immune response and wound healing.",
+    "imageUrl": "http://localhost:5001/uploads/zinc.webp",
+    "stock": 115
+  },
+  {
+    "name": "Calcium Tablets",
+    "category": "Supplements",
+    "price": 65,
+    "shortDesc": "Strengthens bones",
+    "description": "Calcium tablets help maintain strong bones and teeth.",
+    "imageUrl": "http://localhost:5001/uploads/cal.webp",
+    "stock": 100
+  },
+  {
+    "name": "Diclofenac",
+    "category": "Pain Relief",
+    "price": 38,
+    "shortDesc": "Relieves muscle pain",
+    "description": "Diclofenac tablets are used to treat muscle pain and inflammation.",
+    "imageUrl": "http://localhost:5001/uploads/dic.webp",
+    "stock": 95
+  },
+  {
+    "name": "Aspirin",
+    "category": "Pain Relief",
+    "price": 28,
+    "shortDesc": "Pain and heart protection medicine",
+    "description": "Aspirin is used for pain relief and prevention of heart attacks.",
+    "imageUrl": "http://localhost:5001/uploads/eco.webp",
+    "stock": 100
+  },
+  {
+    "name": "Insulin Injection",
+    "category": "Diabetes",
+    "price": 350,
+    "shortDesc": "Insulin for diabetes treatment",
+    "description": "Insulin injections help regulate blood sugar levels in diabetic patients.",
+    "imageUrl": "http://localhost:5001/uploads/in.webp",
+    "stock": 40
+  },
+  {
+    "name": "Cough Syrup",
+    "category": "Cold",
+    "price": 75,
+    "shortDesc": "Relieves cough and throat irritation",
+    "description": "Cough syrup helps soothe throat irritation and suppress cough.",
+    "imageUrl": "http://localhost:5001/uploads/parawin-bottle-of-60ml.webp",
+    "stock": 85
+  },
+  {
+    "name": "Vicks Vaporub",
+    "category": "Cold",
+    "price": 90,
+    "shortDesc": "Relieves nasal congestion",
+    "description": "Vicks Vaporub ointment is used to relieve cough and cold symptoms.",
+    "imageUrl": "http://localhost:5001/uploads/vicks.webp",
+    "stock": 70
+  },
+  {
+    "name": "Antacid Tablets",
+    "category": "Gastric",
+    "price": 30,
+    "shortDesc": "Quick relief from acidity",
+    "description": "Antacid tablets neutralize stomach acid and relieve heartburn.",
+    "imageUrl": "http://localhost:5001/uploads/digene-acidity-gas-relief-tablets-15.webp",
+    "stock": 120
+  },
+  {
+    "name": "Albendazole",
+    "category": "Deworming",
+    "price": 35,
+    "shortDesc": "Treats worm infections",
+    "description": "Albendazole tablets are used to treat parasitic worm infections.",
+    "imageUrl": "http://localhost:5001/uploads/al.webp",
+    "stock": 90
+  },
+  {
+    "name": "Ciprofloxacin",
+    "category": "Antibiotic",
+    "price": 65,
+    "shortDesc": "Treats bacterial infections",
+    "description": "Ciprofloxacin is an antibiotic used for urinary and respiratory infections.",
+    "imageUrl": "http://localhost:5001/uploads/ciplox-d-bottle-of-10ml.webp",
+    "stock": 85
+  }
+]
