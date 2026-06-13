@@ -18,10 +18,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.send("MediMart API is running...");
-});
 app.use("/uploads", express.static("uploads"));
 
 const JWT_SECRET = process.env.JWT_SECRET || "medfix_secret_key";
