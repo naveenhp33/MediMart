@@ -1,0 +1,31 @@
+services:
+  # Backend Node.js Service
+  - type: web
+    name: medimart-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URL
+        sync: false # Requires manual entry in the Render dashboard
+
+  # Frontend Static Site
+  - type: web
+    name: medimart-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: medimart-backend
+          property: url
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

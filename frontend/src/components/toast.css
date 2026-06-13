@@ -1,0 +1,57 @@
+.cart-toast{
+position:fixed;
+bottom:25px;
+right:25px;
+background:#2ecc71;
+color:white;
+padding:12px 20px;
+border-radius:8px;
+font-weight:500;
+box-shadow:0 6px 15px rgba(0,0,0,0.2);
+animation:fadeIn 0.3s ease;
+z-index:999;
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(10px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+.toast-message{
+position:fixed;
+top:80px; /* below navbar */
+right:25px;
+
+background:#2ecc71;
+color:white;
+
+padding:12px 18px;
+border-radius:8px;
+
+font-weight:500;
+font-size:14px;
+
+box-shadow:0 6px 18px rgba(0,0,0,0.2);
+
+z-index:999;
+
+animation:toastSlide 0.3s ease;
+}
+
+/* animation */
+
+@keyframes toastSlide{
+from{
+opacity:0;
+transform:translateY(-10px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
