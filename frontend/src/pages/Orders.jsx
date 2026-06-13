@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import API from "../api/api";
 import { CartContext } from "../context/CartContext";
 import { ToastContext } from "../context/ToastContext";
-import "./orders.css";
+import "./Orders.css";
 
 function Orders() {
   const [orders, setOrders] = useState([]);

@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { WishlistContext } from "../context/WishlistContext";
 import { CartContext } from "../context/CartContext";
 import { Link } from "react-router-dom";
-import "./wishlist.css";
+import "./Wishlist.css";
 
 function Wishlist(){
 

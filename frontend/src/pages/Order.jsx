@@ -3,7 +3,7 @@ import { CartContext } from "../context/CartContext";
 import API from "../api/api";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ToastContext } from "../context/ToastContext";
-import "./order.css";
+import "./Order.css";
 
 function Order() {
   const { cart, clearCart } = useContext(CartContext);
