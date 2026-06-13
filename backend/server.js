@@ -18,6 +18,10 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("MediMart API is running...");
+});
 app.use("/uploads", express.static("uploads"));
 
 const JWT_SECRET = process.env.JWT_SECRET || "medfix_secret_key";
@@ -485,6 +489,7 @@ app.post("/api/upload/product", upload.single("image"), (req, res) => {
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+
 
 app.get("/api/fix-orders-sellerid", async (req, res) => {
   const orders = await Order.find({});
