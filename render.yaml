@@ -24,7 +24,7 @@ services:
         fromService:
           type: web
           name: medimart-backend
-          property: url
+          property: host
     routes:
       - type: rewrite
         source: /*
