@@ -516,3 +516,21 @@ app.get("/api/fix-orders-sellerid", async (req, res) => {
   }
   res.json({ message: `Updated ${updated} orders` });
 });
+
+app.get("/api/fix-images", async (req, res) => {
+  try {
+    const products = await mongoose.model("Product").find({});
+    let updatedCount = 0;
+    for (let p of products) {
+      if (p.imageUrl && p.imageUrl.includes("http://localhost:5001")) {
+        // Strip localhost to make it relative
+        p.imageUrl = p.imageUrl.replace("http://localhost:5001", "");
+        await p.save();
+        updatedCount++;
+      }
+    }
+    res.json({ message: `Fixed ${updatedCount} product images in the database!` });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
